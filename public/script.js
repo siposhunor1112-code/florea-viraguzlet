@@ -63,22 +63,17 @@ const DAY_NAMES = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "P�
 // photo: ha megadod (pl. "assets/photos/rozsa.jpg"), a rajz helyett a fotó jelenik meg.
 const PRODUCTS = [
   { cat: "csokor",  bloom: "peony",   palette: "blush",  seed: 2,  title: "Kerti csokor",         desc: "Laza, természetes kötés szezonális virágokból és friss zöldekből.", photo: "assets/photos/csokor-sarga-rozsa-hortenzia.webp" },
-  { cat: "csokor",  bloom: "rose",    palette: "wine",   seed: 8,  title: "Rózsacsokor",          desc: "Klasszikus, elegáns rózsacsokor – egy szálból vagy akár ötvenből." },
   { cat: "csokor",  bloom: "anemone", palette: "powder", seed: 5,  title: "Pasztell álom",        desc: "Lágy, púderes árnyalatok romantikus pillanatokra – vázában is.", photo: "assets/photos/rozsa-alstroemeria-vazaban.webp" },
   { cat: "csokor",  bloom: "peony",   palette: "cream",  seed: 13, title: "Florea válogatás",     desc: "A kötő szabad keze: a nap legszebb virágaiból, minden darab egyedi.", photo: "assets/photos/csokor-rozsaszin-bordo.webp" },
   { cat: "szalas",  bloom: "rose",    palette: "blush",  seed: 3,  title: "Friss vágott virág",   desc: "Rózsa, liziantusz, alstroemeria és a szezon kedvencei – szálanként is.", photo: "assets/photos/friss-viragok-a-boltban.webp" },
-  { cat: "szalas",  bloom: "bud",     palette: "apricot",seed: 6,  title: "Tulipán",              desc: "Szezonban, sokféle színben – a tavasz legvidámabb virága." },
   { cat: "szalas",  bloom: "anemone", palette: "ivory",  seed: 9,  title: "Kála",                 desc: "Letisztult, elegáns forma – akár egyetlen szálban is.", photo: "assets/photos/kala.webp" },
-  { cat: "noveny",  bloom: "anemone", palette: "lilac",  seed: 4,  title: "Orchidea",             desc: "Lepkeorchidea kaspóban – tartós, elegáns ajándék." },
-  { cat: "noveny",  bloom: "leaf",    palette: "sage",   seed: 12, title: "Zöldnövények",         desc: "Könnyen gondozható szobanövények otthonra és irodába." },
-  { cat: "alkalmi", bloom: "peony",   palette: "wine",   seed: 7,  title: "Virágdoboz",           desc: "Díszdobozba rendezett virágok – a legelegánsabb ajándék." },
   { cat: "alkalmi", bloom: "rose",    palette: "cream",  seed: 10, title: "Menyasszonyi csokor",  desc: "Az esküvő stílusához tervezve, személyes egyeztetés alapján.", photo: "assets/photos/menyasszonyi-csokor-tulipan.webp" },
   { cat: "alkalmi", bloom: "bud",     palette: "ivory",  seed: 11, title: "Menyasszonyi hajdísz", desc: "Fátyolvirág a hajban – könnyed, romantikus esküvői részlet.", photo: "assets/photos/menyasszonyi-hajdisz-fatyolvirag.webp" },
   { cat: "alkalmi", bloom: "anemone", palette: "ivory",  seed: 17, title: "Koszorúk",             desc: "Ajtódísz és szezonális koszorú – élő és szárított virágból.", photo: "assets/photos/levendula-koszoru.webp" },
   { cat: "alkalmi", bloom: "anemone", palette: "ivory",  seed: 19, title: "Kegyeleti kötészet",   desc: "Sírcsokor és koszorú fehér liliommal, rózsával – méltó, csendes búcsú.", photo: "assets/photos/kegyeleti-liliom-rozsa.webp" },
 ];
 
-const CATEGORY_LABEL = { csokor: "Csokor", szalas: "Szálas virág", noveny: "Cserepes", alkalmi: "Alkalmi" };
+const CATEGORY_LABEL = { csokor: "Csokor", szalas: "Szálas virág", alkalmi: "Alkalmi" };
 const CARD_TINTS = ["#ece3d8", "#efe2db", "#e6e4da", "#efe6dc"];
 
 /* ---------- Segédfüggvények ---------- */
@@ -420,7 +415,7 @@ function jsonLd() {
     "@context": "https://schema.org",
     "@type": "Florist",
     name: SHOP.name,
-    description: "Virágüzlet és virágkötészet: kézzel kötött csokrok, szálas virágok, cserepes növények, esküvői és kegyeleti kötészet.",
+    description: "Virágüzlet és virágkötészet: kézzel kötött csokrok, vágott virágok, koszorúk, esküvői és kegyeleti kötészet.",
   };
   if (SHOP.phone) d.telephone = SHOP.phone;
   if (SHOP.email) d.email = SHOP.email;

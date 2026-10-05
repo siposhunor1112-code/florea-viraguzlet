@@ -438,10 +438,10 @@ em { font-style: italic; }
 @media (min-width: 1100px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
 @media (min-width: 1100px) { .grid:not(:has(> :nth-child(7))) { grid-template-columns: repeat(3, 1fr); } }
-/* Kevés fotónál a széles kép pontosan a mellette lévő magasságát veszi fel */
+/* A széles fotó pontosan a sorában lévő képek magasságát veszi fel (a sorban mindig van mellette álló kép is) */
 @media (min-width: 700px) {
-  .grid:not(:has(> :nth-child(7))) .tile--wide:not(.tile--art) { aspect-ratio: auto; align-self: stretch; }
-  .grid:not(:has(> :nth-child(7))) .tile--wide:not(.tile--art) img { position: absolute; inset: 0; }
+  .tile--wide:not(.tile--art) { aspect-ratio: auto; align-self: stretch; }
+  .tile--wide:not(.tile--art) img { position: absolute; inset: 0; }
 }
 .gallery__more { margin-top: 36px; display: flex; justify-content: center; }
 .gallery__more .btn { text-align: center; }

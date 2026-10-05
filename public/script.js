@@ -38,7 +38,12 @@ const GALLERY = [
   { src: "assets/photos/csokor-rozsaszin-bordo.webp", alt: "Rózsaszín és bordó csokor kerti rózsával, boglárkával és eukaliptusszal", wide: true },
   { src: "assets/photos/csokor-sarga-rozsa-hortenzia.webp", alt: "Őszi csokor sárga rózsával, bordó hortenziával és eukaliptusszal" },
   { src: "assets/photos/levendula-koszoru.webp", alt: "Levendulakoszorú lila szalaggal" },
+  { src: "assets/photos/menyasszonyi-hajdisz-fatyolvirag.webp", alt: "Menyasszonyi hajdísz fátyolvirágból" },
+  { src: "assets/photos/menyasszonyi-csokor-tulipan.webp", alt: "Menyasszonyi csokor fehér tulipánnal és eukaliptusszal" },
+  { src: "assets/photos/friss-viragok-a-boltban.webp", alt: "Friss vágott virágok a boltban: rózsa, liziantusz, alstroemeria", wide: true },
   { src: "assets/photos/rozsa-alstroemeria-vazaban.webp", alt: "Rózsaszín rózsa, szegfű és alstroemeria ezüst vázában" },
+  { src: "assets/photos/kala.webp", alt: "Fehér kála közelről" },
+  { src: "assets/photos/kegyeleti-liliom-rozsa.webp", alt: "Kegyeleti kötés fehér liliommal, rózsával és fátyolvirággal" },
   { src: "assets/photos/barka-vazaban.webp", alt: "Barkaágak fehér kerámiavázában" },
 ];
 
@@ -61,14 +66,16 @@ const PRODUCTS = [
   { cat: "csokor",  bloom: "rose",    palette: "wine",   seed: 8,  title: "Rózsacsokor",          desc: "Klasszikus, elegáns rózsacsokor – egy szálból vagy akár ötvenből." },
   { cat: "csokor",  bloom: "anemone", palette: "powder", seed: 5,  title: "Pasztell álom",        desc: "Lágy, púderes árnyalatok romantikus pillanatokra – vázában is.", photo: "assets/photos/rozsa-alstroemeria-vazaban.webp" },
   { cat: "csokor",  bloom: "peony",   palette: "cream",  seed: 13, title: "Florea válogatás",     desc: "A kötő szabad keze: a nap legszebb virágaiból, minden darab egyedi.", photo: "assets/photos/csokor-rozsaszin-bordo.webp" },
-  { cat: "szalas",  bloom: "rose",    palette: "blush",  seed: 3,  title: "Rózsa",                desc: "Klasszikus és különleges színekben, szálanként is." },
+  { cat: "szalas",  bloom: "rose",    palette: "blush",  seed: 3,  title: "Friss vágott virág",   desc: "Rózsa, liziantusz, alstroemeria és a szezon kedvencei – szálanként is.", photo: "assets/photos/friss-viragok-a-boltban.webp" },
   { cat: "szalas",  bloom: "bud",     palette: "apricot",seed: 6,  title: "Tulipán",              desc: "Szezonban, sokféle színben – a tavasz legvidámabb virága." },
-  { cat: "szalas",  bloom: "anemone", palette: "ivory",  seed: 9,  title: "Liliom",               desc: "Illatos, nagy virágú liliom – önmagában is látványos." },
+  { cat: "szalas",  bloom: "anemone", palette: "ivory",  seed: 9,  title: "Kála",                 desc: "Letisztult, elegáns forma – akár egyetlen szálban is.", photo: "assets/photos/kala.webp" },
   { cat: "noveny",  bloom: "anemone", palette: "lilac",  seed: 4,  title: "Orchidea",             desc: "Lepkeorchidea kaspóban – tartós, elegáns ajándék." },
   { cat: "noveny",  bloom: "leaf",    palette: "sage",   seed: 12, title: "Zöldnövények",         desc: "Könnyen gondozható szobanövények otthonra és irodába." },
   { cat: "alkalmi", bloom: "peony",   palette: "wine",   seed: 7,  title: "Virágdoboz",           desc: "Díszdobozba rendezett virágok – a legelegánsabb ajándék." },
-  { cat: "alkalmi", bloom: "rose",    palette: "cream",  seed: 10, title: "Menyasszonyi csokor",  desc: "Az esküvő stílusához tervezve, személyes egyeztetés alapján." },
-  { cat: "alkalmi", bloom: "anemone", palette: "ivory",  seed: 17, title: "Koszorúk",             desc: "Ajtódísz, szezonális és kegyeleti koszorú – élő és szárított virágból.", photo: "assets/photos/levendula-koszoru.webp" },
+  { cat: "alkalmi", bloom: "rose",    palette: "cream",  seed: 10, title: "Menyasszonyi csokor",  desc: "Az esküvő stílusához tervezve, személyes egyeztetés alapján.", photo: "assets/photos/menyasszonyi-csokor-tulipan.webp" },
+  { cat: "alkalmi", bloom: "bud",     palette: "ivory",  seed: 11, title: "Menyasszonyi hajdísz", desc: "Fátyolvirág a hajban – könnyed, romantikus esküvői részlet.", photo: "assets/photos/menyasszonyi-hajdisz-fatyolvirag.webp" },
+  { cat: "alkalmi", bloom: "anemone", palette: "ivory",  seed: 17, title: "Koszorúk",             desc: "Ajtódísz és szezonális koszorú – élő és szárított virágból.", photo: "assets/photos/levendula-koszoru.webp" },
+  { cat: "alkalmi", bloom: "anemone", palette: "ivory",  seed: 19, title: "Kegyeleti kötészet",   desc: "Sírcsokor és koszorú fehér liliommal, rózsával – méltó, csendes búcsú.", photo: "assets/photos/kegyeleti-liliom-rozsa.webp" },
 ];
 
 const CATEGORY_LABEL = { csokor: "Csokor", szalas: "Szálas virág", noveny: "Cserepes", alkalmi: "Alkalmi" };

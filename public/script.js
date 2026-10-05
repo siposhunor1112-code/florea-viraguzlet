@@ -13,7 +13,7 @@ const SHOP = {
   address: "1183 Budapest, Nefelejcs u. 95.",
   // A keresőknek (strukturált adat) – a fenti cím részei
   addressParts: { streetAddress: "Nefelejcs u. 95.", postalCode: "1183", addressLocality: "Budapest", addressRegion: "XVIII. kerület", addressCountry: "HU" },
-  facebook: null,       // pl. "https://www.facebook.com/florea"
+  facebook: "https://www.facebook.com/floreabudapest",
   instagram: null,      // pl. "https://www.instagram.com/florea"
   // Nyitvatartás: 0 = vasárnap … 6 = szombat, ["08:00", "18:00"] formában; null = zárva.
   // Ha az egész hours null, az oldal nem mutat nyitvatartást és élő nyitva/zárva jelzést.

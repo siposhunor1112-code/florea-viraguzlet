@@ -38,7 +38,8 @@ Nyitókép (élő nyitva/zárva jelzéssel, ha van nyitvatartás) · 01 A bolt �
 - `SHOP.hours` – nyitvatartás napokra bontva (példa a fájlban); ebből számolja az oldal, hogy most nyitva van-e (budapesti idő)
 - `SHOP.heroPhoto` – a nyitókép fotója; ha `null`, rajzolt virágkompozíció látszik
 - `GALLERY` – a galéria fotói: `{ src: "assets/photos/kep.jpg", alt: "rövid leírás", wide: true }`
-- `PRODUCTS` – a kollekció kártyái; `photo: "assets/photos/…"` megadásával a rajz helyett fotó jelenik meg
+- `PRODUCTS` – a kollekció kártyái; `photo: "assets/photos/…"` megadásával a rajz helyett fotó jelenik meg (a fotós kártyák kerülnek előre)
+- `VIDEOS` – videók a `public/assets/videos/` mappából; az oldal némítva, folyamatosan lejátssza őket, amikor láthatók, koppintásra szól a hang. Videó: MP4 (H.264), álló 9:16, 10–30 mp, lehetőleg 5 MB alatt
 
 Fotók: JPG vagy WebP, a hosszabbik oldal kb. 1600 px, egyenként lehetőleg 400 KB alatt.
 

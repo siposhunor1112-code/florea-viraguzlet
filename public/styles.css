@@ -304,6 +304,9 @@ em { font-style: italic; }
 
 /* ---------- 01 A bolt ---------- */
 .about__grid { display: grid; gap: 32px; }
+.about__photo { justify-self: center; width: min(100%, 330px); }
+.about__photo img { width: 100%; height: auto; aspect-ratio: 484 / 620; object-fit: cover; border-radius: 999px 999px 18px 18px; }
+.about__photo figcaption { margin-top: 12px; text-align: center; font: italic 400 18px/1.3 var(--serif); color: var(--ink-soft); }
 .about__lead { font: 400 clamp(22px, 5.6vw, 30px)/1.35 var(--serif); color: var(--ink); }
 .about__body p + p { margin-top: 18px; color: var(--ink-soft); }
 .values { display: grid; gap: 0; border-top: 1px solid var(--line); margin-top: 8px; }
@@ -312,10 +315,12 @@ em { font-style: italic; }
 .values h3 { font: 500 15px/1.4 var(--sans); }
 .values p { font-size: 14.5px; color: var(--ink-soft); margin-top: 4px; }
 @media (min-width: 900px) {
-  .about__grid { grid-template-columns: 5fr 6fr; column-gap: 80px; row-gap: 64px; }
-  .about__body { padding-top: 34px; }
+  .about__grid { grid-template-columns: 4fr 3fr 4fr; column-gap: 64px; row-gap: 64px; align-items: start; }
+  .about__grid > .shead { grid-column: 1; grid-row: 1; }
+  .about__photo { grid-column: 2; grid-row: 1; width: 100%; margin-top: 8px; }
+  .about__body { grid-column: 3; grid-row: 1; padding-top: 34px; }
   .values { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); column-gap: 48px; border-top: 0; }
-  .values li { grid-template-columns: 1fr; border-top: 1px solid var(--ink); border-bottom: 0; padding-top: 26px; }
+  .values li { grid-template-columns: 1fr; align-content: start; border-top: 1px solid var(--ink); border-bottom: 0; padding-top: 26px; }
   .values__num { grid-row: auto; margin-bottom: 14px; }
 }
 
@@ -431,6 +436,36 @@ em { font-style: italic; }
 .tile--art svg { width: 100%; height: auto; overflow: visible; }
 @media (min-width: 700px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 64px; } .tile { border-radius: var(--radius); } }
 @media (min-width: 1100px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+@media (min-width: 1100px) { .grid:not(:has(> :nth-child(7))) { grid-template-columns: repeat(3, 1fr); } }
+.gallery__more { margin-top: 36px; display: flex; justify-content: center; }
+.gallery__more .btn { text-align: center; }
+
+/* Videók: függőleges „reel” kártyák, oldalra lapozva */
+.gallery__videos { margin-top: 44px; }
+@media (min-width: 700px) { .gallery__videos { margin-top: 64px; } }
+.reels {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(62vw, 260px); gap: 12px;
+  overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+  margin-inline: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 6px; scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+.reels::-webkit-scrollbar { display: none; }
+@media (min-width: 900px) { .reels { grid-auto-columns: 280px; gap: 18px; justify-content: center; } }
+.reel { position: relative; aspect-ratio: 9 / 16; border-radius: var(--radius); overflow: hidden; background: var(--wine); scroll-snap-align: start; }
+.reel video { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
+.reel figcaption {
+  position: absolute; inset: auto 0 0; padding: 44px 16px 16px;
+  background: linear-gradient(transparent, rgba(30, 10, 18, .7));
+  color: var(--paper); font: italic 400 19px/1.25 var(--serif); pointer-events: none;
+}
+.reel__sound {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center; color: var(--paper);
+  background: rgba(30, 10, 18, .45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.reel__sound .ico { width: 18px; height: 18px; }
+.reel.is-sound .reel__sound { background: var(--paper); color: var(--wine); }
 
 /* Nagyítás */
 .lightbox {

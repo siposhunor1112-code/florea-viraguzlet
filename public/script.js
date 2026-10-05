@@ -27,15 +27,25 @@ const SHOP = {
     0: ["07:00", "18:00"],
   },
   // A nyitókép fotója (assets/photos/ mappából). Ha null, rajzolt virágkompozíció látszik.
-  heroPhoto: null,      // pl. "assets/photos/nyitokep.jpg"
+  heroPhoto: "assets/photos/csokor-rozsaszin-bordo.webp",
+  heroPhotoAlt: "Rózsaszín és bordó csokor kerti rózsával, boglárkával és eukaliptusszal",
 };
 
 // Fotógaléria – a képeket a public/assets/photos/ mappába tedd.
 // Amíg üres, a galériában rajzolt virágok látszanak.
 // wide: true → a kép két oszlop széles (fekvő képekhez)
 const GALLERY = [
-  // { src: "assets/photos/csokor-1.jpg", alt: "Pasztell rózsacsokor eukaliptusszal" },
-  // { src: "assets/photos/bolt.jpg", alt: "A Florea virágüzlet kirakata", wide: true },
+  { src: "assets/photos/csokor-rozsaszin-bordo.webp", alt: "Rózsaszín és bordó csokor kerti rózsával, boglárkával és eukaliptusszal", wide: true },
+  { src: "assets/photos/csokor-sarga-rozsa-hortenzia.webp", alt: "Őszi csokor sárga rózsával, bordó hortenziával és eukaliptusszal" },
+  { src: "assets/photos/levendula-koszoru.webp", alt: "Levendulakoszorú lila szalaggal" },
+  { src: "assets/photos/rozsa-alstroemeria-vazaban.webp", alt: "Rózsaszín rózsa, szegfű és alstroemeria ezüst vázában" },
+  { src: "assets/photos/barka-vazaban.webp", alt: "Barkaágak fehér kerámiavázában" },
+];
+
+// Videók – a public/assets/videos/ mappából. Az oldal némítva, folyamatosan lejátssza őket,
+// amikor láthatók; koppintásra bekapcsol a hang. Amíg üres, a videósáv nem látszik.
+const VIDEOS = [
+  // { src: "assets/videos/csokorkotes.mp4", poster: "assets/videos/csokorkotes.jpg", title: "Csokorkötés a műhelyben" },
 ];
 
 const DAY_NAMES = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
@@ -43,10 +53,10 @@ const DAY_NAMES = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "P�
 // A Kollekció kártyái. bloom: peony | rose | anemone | bud | leaf; palette: lásd PALETTES
 // photo: ha megadod (pl. "assets/photos/rozsa.jpg"), a rajz helyett a fotó jelenik meg.
 const PRODUCTS = [
-  { cat: "csokor",  bloom: "peony",   palette: "blush",  seed: 2,  title: "Kerti csokor",         desc: "Laza, természetes kötés szezonális virágokból és friss zöldekből." },
+  { cat: "csokor",  bloom: "peony",   palette: "blush",  seed: 2,  title: "Kerti csokor",         desc: "Laza, természetes kötés szezonális virágokból és friss zöldekből.", photo: "assets/photos/csokor-sarga-rozsa-hortenzia.webp" },
   { cat: "csokor",  bloom: "rose",    palette: "wine",   seed: 8,  title: "Rózsacsokor",          desc: "Klasszikus, elegáns rózsacsokor – egy szálból vagy akár ötvenből." },
-  { cat: "csokor",  bloom: "anemone", palette: "powder", seed: 5,  title: "Pasztell álom",        desc: "Lágy, púderes árnyalatok romantikus pillanatokra." },
-  { cat: "csokor",  bloom: "peony",   palette: "cream",  seed: 13, title: "Florea válogatás",     desc: "A kötő szabad keze: a nap legszebb virágaiból, minden darab egyedi." },
+  { cat: "csokor",  bloom: "anemone", palette: "powder", seed: 5,  title: "Pasztell álom",        desc: "Lágy, púderes árnyalatok romantikus pillanatokra – vázában is.", photo: "assets/photos/rozsa-alstroemeria-vazaban.webp" },
+  { cat: "csokor",  bloom: "peony",   palette: "cream",  seed: 13, title: "Florea válogatás",     desc: "A kötő szabad keze: a nap legszebb virágaiból, minden darab egyedi.", photo: "assets/photos/csokor-rozsaszin-bordo.webp" },
   { cat: "szalas",  bloom: "rose",    palette: "blush",  seed: 3,  title: "Rózsa",                desc: "Klasszikus és különleges színekben, szálanként is." },
   { cat: "szalas",  bloom: "bud",     palette: "apricot",seed: 6,  title: "Tulipán",              desc: "Szezonban, sokféle színben – a tavasz legvidámabb virága." },
   { cat: "szalas",  bloom: "anemone", palette: "ivory",  seed: 9,  title: "Liliom",               desc: "Illatos, nagy virágú liliom – önmagában is látványos." },
@@ -54,7 +64,7 @@ const PRODUCTS = [
   { cat: "noveny",  bloom: "leaf",    palette: "sage",   seed: 12, title: "Zöldnövények",         desc: "Könnyen gondozható szobanövények otthonra és irodába." },
   { cat: "alkalmi", bloom: "peony",   palette: "wine",   seed: 7,  title: "Virágdoboz",           desc: "Díszdobozba rendezett virágok – a legelegánsabb ajándék." },
   { cat: "alkalmi", bloom: "rose",    palette: "cream",  seed: 10, title: "Menyasszonyi csokor",  desc: "Az esküvő stílusához tervezve, személyes egyeztetés alapján." },
-  { cat: "alkalmi", bloom: "anemone", palette: "ivory",  seed: 17, title: "Koszorú és sírcsokor", desc: "Méltó, visszafogott kegyeleti kötészet élő virágból." },
+  { cat: "alkalmi", bloom: "anemone", palette: "ivory",  seed: 17, title: "Koszorúk",             desc: "Ajtódísz, szezonális és kegyeleti koszorú – élő és szárított virágból.", photo: "assets/photos/levendula-koszoru.webp" },
 ];
 
 const CATEGORY_LABEL = { csokor: "Csokor", szalas: "Szálas virág", noveny: "Cserepes", alkalmi: "Alkalmi" };
@@ -204,7 +214,7 @@ function makeBloom(type = "peony", paletteName = "blush", seed = 1) {
 // Nyitókép: fotó, ha van; különben három virágból álló kompozíció
 function heroArtHTML() {
   if (SHOP.heroPhoto) {
-    return `<img src="${esc(SHOP.heroPhoto)}" alt="Virágcsokor a Florea virágüzletből" width="900" height="1200" fetchpriority="high">`;
+    return `<img src="${esc(SHOP.heroPhoto)}" alt="${esc(SHOP.heroPhotoAlt || "Virágcsokor a Florea virágüzletből")}" width="943" height="940" fetchpriority="high">`;
   }
   return `
     <div class="hero__bloom hero__bloom--a">${makeBloom("peony", "blush", 21)}</div>
@@ -327,6 +337,7 @@ function footerContactHTML() {
 function productsHTML(filter = "all") {
   return PRODUCTS
     .filter((p) => filter === "all" || p.cat === filter)
+    .sort((a, b) => !!b.photo - !!a.photo) // a fotós kártyák kerülnek előre
     .map((p, i) => {
       const bg = CARD_TINTS[i % CARD_TINTS.length];
       const art = p.photo
@@ -365,6 +376,26 @@ function galleryHTML() {
       </div>`).join("");
 }
 
+const ICON_SOUND = {
+  off: '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="m17 9 4 6M21 9l-4 6"/>',
+  on: '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
+};
+function videosHTML() {
+  if (!VIDEOS.length) return "";
+  return `<div class="reels" id="reels">${VIDEOS.map((v) => `
+      <figure class="reel">
+        <video src="${esc(v.src)}"${v.poster ? ` poster="${esc(v.poster)}"` : ""} muted loop playsinline preload="none" aria-label="${esc(v.title || "Videó a Florea virágüzletből")}"></video>
+        <button class="reel__sound" type="button" aria-label="Hang bekapcsolása" aria-pressed="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON_SOUND.off}</svg></button>
+        ${v.title ? `<figcaption>${esc(v.title)}</figcaption>` : ""}
+      </figure>`).join("")}
+    </div>`;
+}
+
+function facebookCtaHTML() {
+  if (!SHOP.facebook) return "";
+  return `<a class="btn btn--ghost" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">${icon("fb")}<span>További képek és videók a Facebookon</span>${icon("arrow")}</a>`;
+}
+
 // A keresőknek: strukturált adat, csak a valóban megadott mezőkkel
 function jsonLd() {
   const d = {
@@ -398,6 +429,8 @@ const FILLS = {
   footerContact: footerContactHTML,
   products: productsHTML,
   gallery: galleryHTML,
+  videos: videosHTML,
+  facebookCta: facebookCtaHTML,
 };
 
 /* ==========================================================
@@ -533,6 +566,43 @@ function initLightbox() {
   });
 }
 
+/* ---------- Videók: némítva indulnak, ha láthatók; koppintásra hang ---------- */
+function initVideos() {
+  const vids = $$(".reel video");
+  if (!vids.length) return;
+  const play = (v) => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      const v = e.target;
+      if (e.isIntersecting) { if (v.preload === "none") v.preload = "auto"; play(v); }
+      else v.pause();
+    }), { threshold: .35 });
+    vids.forEach((v) => io.observe(v));
+  } else if (!reduceMotion) vids.forEach(play);
+  else vids.forEach((v) => { v.controls = true; v.preload = "metadata"; });
+
+  $$(".reel").forEach((fig) => {
+    const v = $("video", fig), btn = $(".reel__sound", fig);
+    const toggle = () => {
+      const unmute = v.muted;
+      // Egyszerre csak egy videó szóljon
+      if (unmute) $$(".reel").forEach((other) => { if (other !== fig) setSound(other, false); });
+      setSound(fig, unmute);
+      if (v.paused) play(v);
+    };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+    v.addEventListener("click", toggle);
+  });
+  function setSound(fig, on) {
+    const v = $("video", fig), btn = $(".reel__sound", fig);
+    v.muted = !on;
+    btn.setAttribute("aria-pressed", String(on));
+    btn.setAttribute("aria-label", on ? "Hang kikapcsolása" : "Hang bekapcsolása");
+    $("svg", btn).innerHTML = on ? ICON_SOUND.on : ICON_SOUND.off;
+    fig.classList.toggle("is-sound", on);
+  }
+}
+
 /* ---------- Térkép: csak kattintásra tölti be a Google Maps-et ---------- */
 function initMap() {
   $$(".mapbox__load").forEach((btn) => btn.addEventListener("click", () => {
@@ -608,6 +678,7 @@ if (!window.__PRERENDER__) {
     initCollection();
     initLightbox();
     initMap();
+    initVideos();
     initReveal();
     initImageFallbacks();
   };

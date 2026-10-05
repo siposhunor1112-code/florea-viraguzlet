@@ -54,7 +54,7 @@ node tools/prerender.js
 
 ## Élesítés előtt
 
-- `index.html`: az `og:image` sorba a végleges domain kerüljön (teljes URL)
+- saját domain esetén az `index.html`-ben az `og:url`, `og:image` és `canonical` sorokban is cseréld a címet
 - a kollekció kártyái általános virágbolti kínálatot mutatnak – igazítsd a bolt tényleges kínálatához
 
 ## Helyi megtekintés

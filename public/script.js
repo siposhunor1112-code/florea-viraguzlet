@@ -393,7 +393,7 @@ function videosHTML() {
 
 function facebookCtaHTML() {
   if (!SHOP.facebook) return "";
-  return `<a class="btn btn--ghost" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">${icon("fb")}<span>További képek és videók a Facebookon</span>${icon("arrow")}</a>`;
+  return `<a class="btn btn--ghost" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">${icon("fb")}<span>Még több a Facebookon</span>${icon("arrow")}</a>`;
 }
 
 // A keresőknek: strukturált adat, csak a valóban megadott mezőkkel

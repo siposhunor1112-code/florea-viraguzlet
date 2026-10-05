@@ -1,0 +1,3 @@
+# Florea Virágüzlet – a keresők számára az egész oldal látogatható
+User-agent: *
+Allow: /

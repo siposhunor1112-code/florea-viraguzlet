@@ -12,6 +12,8 @@ Nincs szükség build lépésre: a `public/` mappa bármilyen statikus tárhelye
   - `script.js` – **minden adat itt van**: elérhetőségek, nyitvatartás, kollekció, galéria
   - `assets/photos/` – ide kerülnek a fotók
   - `assets/fonts/` – betűtípusok saját tárhelyről (SIL Open Font License)
+  - `assets/logo.svg` – a logó vektorosan (átlátszó háttér); `assets/logo.png` – ugyanez 1024 px-es PNG-ben
+  - `assets/favicon.svg`, `assets/apple-touch-icon.png` – böngészőfül- és telefonos ikon a logóból
   - `assets/og.jpg` – megosztási kép (Facebook, Messenger, Viber előnézet)
   - `robots.txt`, `_headers` – keresők és biztonsági fejlécek (a Cloudflare alkalmazza)
 - `wrangler.jsonc` – Cloudflare-beállítás (a `public/` mappát teszi ki)
@@ -20,7 +22,7 @@ Nincs szükség build lépésre: a `public/` mappa bármilyen statikus tárhelye
 ## Megjelenés
 
 - Betűtípusok: Cormorant Garamond (címek) és Manrope (szöveg)
-- Színek: elefántcsont, mohazöld, púderrózsa – a `public/styles.css` elején
+- Színek: a logó bordója (`#802b48`), mély bor a sötét részeken, elefántcsont háttér – a `public/styles.css` elején
 - Amíg nincs fotó, a virágképek kódból készülnek (`makeBloom` a `public/script.js`-ben)
 
 ## Szekciók

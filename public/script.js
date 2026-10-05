@@ -8,17 +8,24 @@
 
 const SHOP = {
   name: "Florea Virágüzlet",
-  phone: null,          // pl. "+36 30 123 4567"
+  phone: "+36 70 250 7296",
   email: null,          // pl. "hello@florea.hu"
-  address: null,        // pl. "1234 Város, Fő utca 1."
+  address: "1183 Budapest, Nefelejcs u. 95.",
+  // A keresőknek (strukturált adat) – a fenti cím részei
+  addressParts: { streetAddress: "Nefelejcs u. 95.", postalCode: "1183", addressLocality: "Budapest", addressRegion: "XVIII. kerület", addressCountry: "HU" },
   facebook: null,       // pl. "https://www.facebook.com/florea"
   instagram: null,      // pl. "https://www.instagram.com/florea"
   // Nyitvatartás: 0 = vasárnap … 6 = szombat, ["08:00", "18:00"] formában; null = zárva.
   // Ha az egész hours null, az oldal nem mutat nyitvatartást és élő nyitva/zárva jelzést.
-  hours: null,
-  // Pl.:
-  // hours: { 1: ["08:00", "18:00"], 2: ["08:00", "18:00"], 3: ["08:00", "18:00"],
-  //          4: ["08:00", "18:00"], 5: ["08:00", "18:00"], 6: ["08:00", "13:00"], 0: null },
+  hours: {
+    1: ["07:00", "18:00"],
+    2: ["07:00", "18:00"],
+    3: ["07:00", "18:00"],
+    4: ["07:00", "18:00"],
+    5: ["07:00", "18:00"],
+    6: ["07:00", "18:00"],
+    0: ["07:00", "18:00"],
+  },
   // A nyitókép fotója (assets/photos/ mappából). Ha null, rajzolt virágkompozíció látszik.
   heroPhoto: null,      // pl. "assets/photos/nyitokep.jpg"
 };
@@ -61,6 +68,8 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const nbsp = (s) => s.replace(/ /g, " "); // nem törhető szóköz: a telefonszám nem esik két sorba
 
+// A házszám ne kerüljön új sorba az utcanévtől ("u. 95.")
+const addrText = () => esc(SHOP.address).replace(/ (?=\d)/g, "\u00a0");
 const telHref = () => "tel:" + SHOP.phone.replace(/[^\d+]/g, "");
 const mapsHref = () => "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(SHOP.address);
 const mapEmbed = () => "https://www.google.com/maps?q=" + encodeURIComponent(SHOP.address) + "&output=embed";
@@ -257,7 +266,7 @@ function contactHTML() {
   if (SHOP.address) rows.push(`
       <a class="crow" href="${esc(mapsHref())}" target="_blank" rel="noopener">
         <span class="crow__ico">${icon("pin")}</span>
-        <span class="crow__body"><span class="crow__label">Cím · útvonaltervezés</span><span class="crow__value">${esc(SHOP.address)}</span></span>
+        <span class="crow__body"><span class="crow__label">Cím · útvonaltervezés</span><span class="crow__value">${addrText()}</span></span>
         <span class="crow__go">${icon("arrow")}</span>
       </a>`);
   if (SHOP.email) rows.push(`
@@ -307,7 +316,7 @@ function mapHTML() {
 
 function footerContactHTML() {
   const parts = [];
-  if (SHOP.address) parts.push(`<span>${esc(SHOP.address)}</span>`);
+  if (SHOP.address) parts.push(`<span>${addrText()}</span>`);
   if (SHOP.phone) parts.push(`<a href="${telHref()}">${nbsp(esc(SHOP.phone))}</a>`);
   if (SHOP.email) parts.push(`<a href="mailto:${esc(SHOP.email)}">${esc(SHOP.email)}</a>`);
   if (SHOP.facebook) parts.push(`<a href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">Facebook</a>`);
@@ -366,7 +375,7 @@ function jsonLd() {
   };
   if (SHOP.phone) d.telephone = SHOP.phone;
   if (SHOP.email) d.email = SHOP.email;
-  if (SHOP.address) d.address = SHOP.address;
+  if (SHOP.address) d.address = SHOP.addressParts ? { "@type": "PostalAddress", ...SHOP.addressParts } : SHOP.address;
   const same = [SHOP.facebook, SHOP.instagram].filter(Boolean);
   if (same.length) d.sameAs = same;
   if (SHOP.hours) {

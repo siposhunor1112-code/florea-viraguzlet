@@ -404,22 +404,23 @@ function videosHTML() {
     </div>`;
 }
 
-// A Florea Facebook-oldala élőben (a Facebook hivatalos oldal-beágyazója): a legújabb bejegyzések,
-// fotók és videók, mindig frissen – nem kell hozzá egyenként videólinket megadni
+// Facebook-ajánló a galéria alatt: a saját fotóinkból, a Facebook-oldalra mutat.
+// (A Facebook beágyazott oldal-dobozát nem használjuk: a Florea oldalát csak bejelentkezve tölti be, különben csak forog.)
 function facebookCtaHTML() {
   if (!SHOP.facebook) return "";
+  const pics = GALLERY.slice(0, 4);
   return `
-      <div class="fbfeed">
-        <div class="fbfeed__text">
-          <p class="shead__num">Facebook</p>
-          <h3 class="fbfeed__title">Friss a <em>Facebookról.</em></h3>
-          <p>Legújabb csokraink, videóink és híreink – közvetlenül a Florea Facebook-oldaláról, mindig frissen.</p>
-          <a class="btn btn--ghost" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">${icon("fb")}<span>Megnyitás a Facebookon</span>${icon("arrow")}</a>
-        </div>
-        <div class="fbfeed__frame" data-fb-page="${esc(SHOP.facebook)}">
-          <a class="fbfeed__fallback" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">${icon("fb")}<span>A Florea Facebook-oldala</span></a>
-        </div>
-      </div>`;
+      <a class="fbcard" href="${esc(SHOP.facebook)}" target="_blank" rel="noopener">
+        <span class="fbcard__pics" aria-hidden="true">${pics.map((g) => `<img src="${esc(g.src)}" alt="" loading="lazy" decoding="async">`).join("")}</span>
+        <span class="fbcard__body">
+          <span class="fbcard__ico">${icon("fb")}</span>
+          <span class="fbcard__text">
+            <span class="fbcard__label">Kövessen a Facebookon</span>
+            <span class="fbcard__title">Friss csokrok, videók és hírek</span>
+          </span>
+          <span class="fbcard__go">${icon("arrow")}</span>
+        </span>
+      </a>`;
 }
 
 // A keresőknek: strukturált adat, csak a valóban megadott mezőkkel
@@ -703,36 +704,6 @@ function loadFacebookSDK() {
   document.body.appendChild(js);
 }
 
-/* ---------- Facebook-oldal beágyazva: csak akkor töltődik be, amikor közel ér a látogató ---------- */
-function initFacebookPage() {
-  const box = $("[data-fb-page]");
-  if (!box || !/^https?:$/.test(location.protocol)) return;
-  const mount = () => {
-    // A Facebook a betöltéskor megadott szélességben rajzol (180–500 px), ezért a doboz tényleges szélességét adjuk meg
-    const w = Math.max(180, Math.min(500, Math.floor(box.clientWidth)));
-    const h = Math.round(Math.min(760, Math.max(560, window.innerHeight * .8)));
-    const q = new URLSearchParams({
-      href: box.dataset.fbPage, tabs: "timeline", width: String(w), height: String(h),
-      small_header: "false", adapt_container_width: "true", hide_cover: "false", show_facepile: "false", locale: "hu_HU",
-    });
-    const f = document.createElement("iframe");
-    f.src = "https://www.facebook.com/plugins/page.php?" + q;
-    f.width = String(w); f.height = String(h);
-    f.title = "A Florea virágüzlet Facebook-oldala";
-    f.loading = "lazy";
-    f.allow = "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share";
-    f.allowFullscreen = true;
-    f.addEventListener("load", () => box.classList.add("is-loaded"), { once: true });
-    box.style.height = h + "px";
-    box.appendChild(f);
-  };
-  if (!("IntersectionObserver" in window)) return mount();
-  const io = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); mount(); }
-  }, { rootMargin: "600px 0px" });
-  io.observe(box);
-}
-
 /* ---------- Térkép: csak kattintásra tölti be a Google Maps-et ---------- */
 function initMap() {
   $$(".mapbox__load").forEach((btn) => btn.addEventListener("click", () => {
@@ -809,7 +780,6 @@ if (!window.__PRERENDER__) {
     initLightbox();
     initMap();
     initVideos();
-    initFacebookPage();
     initReveal();
     initImageFallbacks();
   };

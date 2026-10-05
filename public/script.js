@@ -42,10 +42,14 @@ const GALLERY = [
   { src: "assets/photos/barka-vazaban.webp", alt: "Barkaágak fehér kerámiavázában" },
 ];
 
-// Videók – a public/assets/videos/ mappából. Az oldal némítva, folyamatosan lejátssza őket,
-// amikor láthatók; koppintásra bekapcsol a hang. Amíg üres, a videósáv nem látszik.
+// Videók – kétféle lehet:
+//  • Facebook-videó vagy reel: { facebook: "https://www.facebook.com/…/videos/123…", title: "…" }
+//    (a Facebook saját lejátszójával; asztali gépen némítva, magától indul, ha látható;
+//    telefonon a Facebook nem engedi az automatikus indítást: ott az előnézeti képe látszik, koppintásra indul)
+//  • saját fájl a public/assets/videos/ mappából: { src: "assets/videos/x.mp4", poster: "assets/videos/x.jpg", title: "…" }
+//    (minden eszközön némítva, magától indul, ha látható)
+// Koppintásra / a hang gombbal szól a hang; egyszerre csak egy videó szól. Amíg üres, a videósáv nem látszik.
 const VIDEOS = [
-  // { src: "assets/videos/csokorkotes.mp4", poster: "assets/videos/csokorkotes.jpg", title: "Csokorkötés a műhelyben" },
 ];
 
 const DAY_NAMES = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
@@ -382,12 +386,19 @@ const ICON_SOUND = {
 };
 function videosHTML() {
   if (!VIDEOS.length) return "";
-  return `<div class="reels" id="reels">${VIDEOS.map((v) => `
-      <figure class="reel">
-        <video src="${esc(v.src)}"${v.poster ? ` poster="${esc(v.poster)}"` : ""} muted loop playsinline preload="none" aria-label="${esc(v.title || "Videó a Florea virágüzletből")}"></video>
-        <button class="reel__sound" type="button" aria-label="Hang bekapcsolása" aria-pressed="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON_SOUND.off}</svg></button>
-        ${v.title ? `<figcaption>${esc(v.title)}</figcaption>` : ""}
-      </figure>`).join("")}
+  const soundBtn = `<button class="reel__sound" type="button" aria-label="Hang bekapcsolása" aria-pressed="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON_SOUND.off}</svg></button>`;
+  return `<div class="reels" id="reels">${VIDEOS.map((v) => {
+    const title = v.title || "Videó a Florea virágüzletből";
+    const media = v.facebook
+      ? `<div class="reel__frame" data-frame><span class="reel__wait" aria-hidden="true"></span></div>`
+      : `<video src="${esc(v.src)}"${v.poster ? ` poster="${esc(v.poster)}"` : ""} muted loop playsinline preload="none" aria-label="${esc(title)}"></video>`;
+    const link = v.facebook ? `<a class="reel__open" href="${esc(v.facebook)}" target="_blank" rel="noopener">Megnyitás a Facebookon</a>` : "";
+    return `
+      <figure class="reel${v.facebook ? " reel--fb" : ""}"${v.facebook ? ` data-fb="${esc(v.facebook)}"` : ""}>
+        <div class="reel__box">${media}${soundBtn}</div>
+        <figcaption><span>${esc(title)}</span>${link}</figcaption>
+      </figure>`;
+  }).join("")}
     </div>`;
 }
 
@@ -567,40 +578,114 @@ function initLightbox() {
 }
 
 /* ---------- Videók: némítva indulnak, ha láthatók; koppintásra hang ---------- */
-function initVideos() {
-  const vids = $$(".reel video");
-  if (!vids.length) return;
-  const play = (v) => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
-  if ("IntersectionObserver" in window && !reduceMotion) {
-    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-      const v = e.target;
-      if (e.isIntersecting) { if (v.preload === "none") v.preload = "auto"; play(v); }
-      else v.pause();
-    }), { threshold: .35 });
-    vids.forEach((v) => io.observe(v));
-  } else if (!reduceMotion) vids.forEach(play);
-  else vids.forEach((v) => { v.controls = true; v.preload = "metadata"; });
+// Érintőképernyős eszköz (telefon, tablet) – itt a Facebook nem enged kódból lejátszást
+const touchDevice = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-  $$(".reel").forEach((fig) => {
-    const v = $("video", fig), btn = $(".reel__sound", fig);
-    const toggle = () => {
-      const unmute = v.muted;
-      // Egyszerre csak egy videó szóljon
-      if (unmute) $$(".reel").forEach((other) => { if (other !== fig) setSound(other, false); });
-      setSound(fig, unmute);
-      if (v.paused) play(v);
-    };
-    btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
-    v.addEventListener("click", toggle);
+function initVideos() {
+  const reels = $$(".reel");
+  if (!reels.length) return;
+  // A Facebook lejátszója csak igazi weboldalon (http/https) működik, helyi fájlként nem
+  const online = /^https?:$/.test(location.protocol);
+  reels.forEach((fig, i) => {
+    $(".reel__sound", fig).addEventListener("click", (e) => { e.stopPropagation(); toggleSound(fig); });
+    if (fig.dataset.fb) { if (online) mountFacebook(fig, i); }
+    else mountLocal(fig);
   });
-  function setSound(fig, on) {
-    const v = $("video", fig), btn = $(".reel__sound", fig);
-    v.muted = !on;
+  if (online && reels.some((r) => r.dataset.fb)) loadFacebookSDK();
+
+  if (reduceMotion) return; // mozgáscsökkentésnél semmi nem indul magától
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      e.target.inView = e.isIntersecting;
+      setPlaying(e.target, e.isIntersecting);
+    }), { threshold: .6 });
+    reels.forEach((r) => io.observe(r));
+  } else reels.forEach((r) => { r.inView = true; setPlaying(r, true); });
+  document.addEventListener("visibilitychange", () => reels.forEach((r) => setPlaying(r, !document.hidden && r.inView)));
+}
+
+// Csak akkor küldünk parancsot, ha tényleg változik az állapot
+function setPlaying(fig, on) {
+  if (!fig.player || fig.playing === on) return;
+  fig.playing = on;
+  on ? fig.player.play() : fig.player.pause();
+}
+
+function playerReady(fig, player) {
+  fig.player = player;
+  fig.classList.add("is-ready");
+  if (!reduceMotion && fig.inView) setPlaying(fig, true);
+}
+
+// Hang be/ki; egyszerre csak egy videó szólhat
+function toggleSound(fig) {
+  if (!fig.player) return;
+  const turnOn = !fig.classList.contains("is-sound");
+  $$(".reel").forEach((other) => {
+    if (!other.player) return;
+    const on = turnOn && other === fig;
+    on ? other.player.unmute() : other.player.mute();
+    other.classList.toggle("is-sound", on);
+    const btn = $(".reel__sound", other);
     btn.setAttribute("aria-pressed", String(on));
     btn.setAttribute("aria-label", on ? "Hang kikapcsolása" : "Hang bekapcsolása");
     $("svg", btn).innerHTML = on ? ICON_SOUND.on : ICON_SOUND.off;
-    fig.classList.toggle("is-sound", on);
-  }
+  });
+  if (turnOn) { fig.playing = false; setPlaying(fig, true); }
+}
+
+function mountLocal(fig) {
+  const v = $("video", fig);
+  if (reduceMotion) { v.controls = true; v.preload = "metadata"; return; }
+  v.addEventListener("click", () => toggleSound(fig));
+  playerReady(fig, {
+    play: () => { if (v.preload === "none") v.preload = "auto"; const p = v.play(); if (p && p.catch) p.catch(() => {}); },
+    pause: () => v.pause(),
+    mute: () => { v.muted = true; },
+    unmute: () => { v.muted = false; },
+  });
+}
+
+function mountFacebook(fig, i) {
+  const frame = $("[data-frame]", fig);
+  const v = document.createElement("div");
+  v.className = "fb-video";
+  v.id = `fb-video-${i}`;
+  v.dataset.href = fig.dataset.fb;
+  v.dataset.width = String(Math.round(frame.clientWidth) || 280);
+  v.dataset.showText = "false";
+  // Telefonon a Facebook nem engedi a kódból indított lejátszást (fekete kép lenne), ezért ott a saját
+  // előnézeti képét mutatja, és koppintásra, hanggal indul
+  v.dataset.autoplay = touchDevice || reduceMotion ? "false" : "true";
+  v.dataset.allowfullscreen = "true";
+  frame.appendChild(v);
+}
+
+// A Facebook hivatalos beágyazó programja (egyszer töltjük be)
+function loadFacebookSDK() {
+  if (window.FB || $("#facebook-jssdk")) return;
+  if (!$("#fb-root")) document.body.insertAdjacentHTML("afterbegin", '<div id="fb-root"></div>');
+  window.fbAsyncInit = () => {
+    FB.init({ xfbml: true, version: "v21.0" });
+    FB.Event.subscribe("xfbml.ready", (msg) => {
+      if (msg.type !== "video") return;
+      const el = document.getElementById(msg.id);
+      const fig = el && el.closest(".reel");
+      if (!fig) return;
+      fig.classList.add("is-loaded");
+      if (touchDevice || reduceMotion) return;
+      const p = msg.instance;
+      p.mute();
+      p.subscribe("finishedPlaying", () => { if (fig.playing) { p.seek(0); p.play(); } });
+      playerReady(fig, { play: () => p.play(), pause: () => p.pause(), mute: () => p.mute(), unmute: () => p.unmute() });
+    });
+  };
+  const js = document.createElement("script");
+  js.id = "facebook-jssdk";
+  js.async = true;
+  js.crossOrigin = "anonymous";
+  js.src = "https://connect.facebook.net/hu_HU/sdk.js";
+  document.body.appendChild(js);
 }
 
 /* ---------- Térkép: csak kattintásra tölti be a Google Maps-et ---------- */
